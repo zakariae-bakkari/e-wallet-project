@@ -1,4 +1,9 @@
-export default function DashboardMain() {
+export default function DashboardMain({
+  authUser,
+  settransferePopup,
+  setdemanderPopup,
+  setrechargerPopup,
+}) {
   return (
     <>
       <main class="dashboard-main">
@@ -45,9 +50,11 @@ export default function DashboardMain() {
             <section id="overview" class="dashboard-section active">
               <div class="section-header">
                 <h2>
-                  Bonjour, <span id="greetingName">?</span> !
+                  Bonjour, <span id="greetingName">{authUser.name}</span> !
                 </h2>
-                <p class="date-display" id="currentDate"></p>
+                <p class="date-display" id="currentDate">
+                  {new Date().toLocaleString()}
+                </p>
               </div>
 
               <div class="summary-cards">
@@ -58,7 +65,7 @@ export default function DashboardMain() {
                   <div class="card-details">
                     <span class="card-label">Solde disponible</span>
                     <span class="card-value" id="availableBalance">
-                      ?
+                      {authUser.wallet.balance}
                     </span>
                   </div>
                 </div>
@@ -70,7 +77,12 @@ export default function DashboardMain() {
                   <div class="card-details">
                     <span class="card-label">Revenus</span>
                     <span class="card-value" id="monthlyIncome">
-                      ?
+                      {authUser.wallet.transactions
+                        .filter((t) => t.type == "credit")
+                        .reduce(
+                          (total, transaction) => total + transaction.amount,
+                          0
+                        )}
                     </span>
                   </div>
                 </div>
@@ -82,7 +94,12 @@ export default function DashboardMain() {
                   <div class="card-details">
                     <span class="card-label">Dépenses</span>
                     <span class="card-value" id="monthlyExpenses">
-                      ?
+                      {authUser.wallet.transactions
+                        .filter((t) => t.type == "debit")
+                        .reduce(
+                          (total, transaction) => total + transaction.amount,
+                          0
+                        )}
                     </span>
                   </div>
                 </div>
@@ -94,7 +111,7 @@ export default function DashboardMain() {
                   <div class="card-details">
                     <span class="card-label">Cartes actives</span>
                     <span class="card-value" id="activeCards">
-                      ?
+                      {authUser.wallet.card}
                     </span>
                   </div>
                 </div>

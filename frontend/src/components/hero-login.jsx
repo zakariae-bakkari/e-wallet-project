@@ -1,4 +1,24 @@
-export default function HeroLogin() {
+import { useState } from "react";
+import { finduserbymail } from "../db/database";
+
+export default function HeroLogin({ setisLoggedIn, setAuthUser }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleLogin = (e) => {
+    e.preventDefault();
+    submitBtn.textContent = "Checking!!!";
+    const user = finduserbymail(email, password);
+
+    setTimeout(() => {
+      if (user) {
+        setisLoggedIn(true);
+        setAuthUser(user);
+        sessionStorage.setItem("currentUser", JSON.stringify(user));
+      } else {
+        alert("Bad credentials.");
+      }
+    }, 2000);
+  };
   return (
     <>
       <main>
@@ -10,12 +30,14 @@ export default function HeroLogin() {
               transactions en toute confiance.
             </p>
             <div id="error"> </div>
-            <form className="login-form">
+            <form className="login-form" onSubmit={handleLogin(e)}>
               <div className="input-group">
                 <input
                   id="mail"
                   type="email"
                   placeholder="Adresse e-mail"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -24,6 +46,8 @@ export default function HeroLogin() {
                   id="password"
                   type="password"
                   placeholder="Mot de passe"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
                 <span id="display" className="toggle-password">
@@ -31,7 +55,7 @@ export default function HeroLogin() {
                 </span>
               </div>
               <p id="result"></p>
-              <button id="submitbtn" type="button" className=" btn btn-primary">
+              <button id="submitbtn" type="submit" className=" btn btn-primary">
                 Se connecter
               </button>
             </form>
