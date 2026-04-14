@@ -1,11 +1,16 @@
-export default function DemanderPopup() {
+export default function DemanderPopup({ setAuthUser, setdemanderPopup }) {
   return (
     <>
       <div className="popup-overlay" id="DemanderPopup">
         <div className="popup-content">
           <div className="popup-header">
             <h2>Effectuer un recharge</h2>
-            <button className="btn-close" id="closedemanderBtn" type="button">
+            <button
+              className="btn-close"
+              id="closedemanderBtn"
+              type="button"
+              onClick={() => setdemanderPopup(false)}
+            >
               <i className="fas fa-times"></i>
             </button>
           </div>
@@ -13,7 +18,7 @@ export default function DemanderPopup() {
           <div className="popup-body">
             <form id="transferForm" className="transfer-form">
               <div className="form-group">
-                <label for="accountDemander">
+                <label htmlFor="accountDemander">
                   <i className="fas fa-credit-card"></i> entrer la carte
                 </label>
                 <input
@@ -24,7 +29,7 @@ export default function DemanderPopup() {
               </div>
 
               <div className="form-group">
-                <label for="amountdemander">
+                <label htmlFor="amountdemander">
                   {" "}
                   <i></i> Montant{" "}
                 </label>
@@ -47,6 +52,7 @@ export default function DemanderPopup() {
                   type="button"
                   className="btn btn-secondary"
                   id="canceldemanderBtn"
+                  onClick={() => setdemanderPopup(false)}
                 >
                   Annuler
                 </button>

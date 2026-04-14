@@ -4,8 +4,8 @@ import IndexPage from "./pages/index";
 import DashboardPage from "./pages/dashboard";
 import { useState } from "react";
 function App() {
-  const [isLoggedIn, setisLoggedIn] = useState(true);
-  const [authUser, setAuthUser] = useState();
+  const [isLoggedIn, setisLoggedIn] = useState(false);
+  const [authUser, setAuthUser] = useState(null);
   return (
     <>
       {isLoggedIn ? (

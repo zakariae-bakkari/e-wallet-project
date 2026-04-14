@@ -1,38 +1,43 @@
-export default function RechargerPopup() {
+export default function RechargerPopup({ setAuthUser, setrechargerPopup }) {
   return (
     <>
-      <div class="popup-overlay" id="rechargerPopup">
-        <div class="popup-content">
-          <div class="popup-header">
+      <div className="popup-overlay" id="rechargerPopup">
+        <div className="popup-content">
+          <div className="popup-header">
             <h2>Effectuer un recharge</h2>
-            <button class="btn-close" id="closeRechargerBtn" type="button">
-              <i class="fas fa-times"></i>
+            <button
+              className="btn-close"
+              id="closeRechargerBtn"
+              type="button"
+              onClick={() => setrechargerPopup(false)}
+            >
+              <i className="fas fa-times"></i>
             </button>
           </div>
 
-          <div class="popup-body">
-            <form id="transferForm" class="transfer-form">
-              <div class="form-group">
-                <label for="sourceCardRecharger">
-                  <i class="fas fa-credit-card"></i> Choisir la carte
+          <div className="popup-body">
+            <form id="transferForm" className="transfer-form">
+              <div className="form-group">
+                <label htmlFor="sourceCardRecharger">
+                  <i className="fas fa-credit-card"></i> Choisir la carte
                 </label>
                 <select
                   id="sourceCardRecharger"
                   name="sourceCardRecharger"
                   required
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     Sélectionner une carte
                   </option>
                 </select>
               </div>
 
-              <div class="form-group">
-                <label for="amountrecharger">
+              <div className="form-group">
+                <label htmlFor="amountrecharger">
                   {" "}
                   <i></i> Montant{" "}
                 </label>
-                <div class="amount-input">
+                <div className="amount-input">
                   <input
                     type="number"
                     id="amountrecharger"
@@ -42,21 +47,22 @@ export default function RechargerPopup() {
                     placeholder="0.00"
                     required
                   />
-                  <span class="currency">MAD</span>
+                  <span className="currency">MAD</span>
                 </div>
               </div>
 
-              <div class="form-actions">
+              <div className="form-actions">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   id="cancelRechargerBtn"
+                  onClick={() => setrechargerPopup(false)}
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   id="submitRechargerBtn"
                 >
                   recharger

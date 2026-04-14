@@ -6,13 +6,14 @@ export default function HeroLogin({ setisLoggedIn, setAuthUser }) {
   const [password, setPassword] = useState("");
   const handleLogin = (e) => {
     e.preventDefault();
-    submitBtn.textContent = "Checking!!!";
+    console.log(finduserbymail(email, password));
     const user = finduserbymail(email, password);
 
     setTimeout(() => {
       if (user) {
         setisLoggedIn(true);
         setAuthUser(user);
+        
         sessionStorage.setItem("currentUser", JSON.stringify(user));
       } else {
         alert("Bad credentials.");
@@ -22,7 +23,7 @@ export default function HeroLogin({ setisLoggedIn, setAuthUser }) {
   return (
     <>
       <main>
-        <section classNameName="hero">
+        <section className="hero">
           <div className="hero-content">
             <h1>Connexion</h1>
             <p>
@@ -30,7 +31,7 @@ export default function HeroLogin({ setisLoggedIn, setAuthUser }) {
               transactions en toute confiance.
             </p>
             <div id="error"> </div>
-            <form className="login-form" onSubmit={handleLogin(e)}>
+            <form className="login-form" onSubmit={handleLogin}>
               <div className="input-group">
                 <input
                   id="mail"

@@ -10,6 +10,7 @@ export default function Dashboard({ authUser, setAuthUser }) {
   const [transferePopup, settransferePopup] = useState(false);
   const [demanderPopup, setdemanderPopup] = useState(false);
   const [rechargerPopup, setrechargerPopup] = useState(false);
+  console.log(transferePopup);
   return (
     <>
       <Header />
@@ -19,9 +20,24 @@ export default function Dashboard({ authUser, setAuthUser }) {
         setrechargerPopup={setrechargerPopup}
         settransferePopup={settransferePopup}
       />
-      {transferePopup && <TransfererPopup setAuthUser={setAuthUser} />}
-      {rechargerPopup && <RechargerPopup setAuthUser={setAuthUser} />}
-      {demanderPopup && <DemanderPopup setAuthUser={setAuthUser} />}
+      {transferePopup && (
+        <TransfererPopup
+          setAuthUser={setAuthUser}
+          settransferePopup={settransferePopup}
+        />
+      )}
+      {rechargerPopup && (
+        <RechargerPopup
+          setAuthUser={setAuthUser}
+          setrechargerPopup={setrechargerPopup}
+        />
+      )}
+      {demanderPopup && (
+        <DemanderPopup
+          setAuthUser={setAuthUser}
+          setdemanderPopup={setdemanderPopup}
+        />
+      )}
       <Footer />
     </>
   );
