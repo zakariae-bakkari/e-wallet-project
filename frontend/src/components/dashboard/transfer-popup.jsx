@@ -1,11 +1,20 @@
 import { useState } from "react";
 
-export default function TransfererPopup({ setAuthUser, settransferePopup }) {
+export default function TransfererPopup({
+  authUser,
+  setAuthUser,
+  settransferePopup,
+}) {
   const [form, setForm] = useState({
     selectedBene: "",
     selectedCard: "",
     amount: 0,
   });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log(form);
+  }
   return (
     <>
       <div className="popup-overlay" id="transferPopup">
@@ -23,15 +32,32 @@ export default function TransfererPopup({ setAuthUser, settransferePopup }) {
           </div>
 
           <div className="popup-body">
-            <form id="transferForm" className="transfer-form">
+            <form
+              id="transferForm"
+              className="transfer-form"
+              onSubmit={handleSubmit}
+            >
               <div className="form-group">
                 <label htmlFor="beneficiary">
                   <i className="fas fa-user"></i> Bénéficiaire
                 </label>
-                <select id="beneficiary" name="beneficiary" required>
+                <select
+                  id="beneficiary"
+                  name="beneficiary"
+                  required
+                  value={form.selectedBene}
+                  onChange={(e) =>
+                    setForm({ ...form, selectedBene: e.target.value })
+                  }
+                >
                   <option value="" disabled>
                     Choisir un bénéficiaire
                   </option>
+                  {authUser.wallet.beneficiaries.map((t) => (
+                    <option key={t.id} value={t.account}>
+                      {t.name}-{t.account}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -39,10 +65,23 @@ export default function TransfererPopup({ setAuthUser, settransferePopup }) {
                 <label htmlFor="sourceCard">
                   <i className="fas fa-credit-card"></i> Depuis ma carte
                 </label>
-                <select id="sourceCard" name="sourceCard" required>
+                <select
+                  id="sourceCard"
+                  name="sourceCard"
+                  required
+                  value={form.selectedCard}
+                  onChange={(e) =>
+                    setForm({ ...form, selectedCard: e.target.value })
+                  }
+                >
                   <option value="" disabled>
                     Sélectionner une carte
                   </option>
+                  {authUser.wallet.cards.map((c) => (
+                    <option key={c.numcards} value={c.numcards}>
+                      {c.numcards}-{c.balance}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -60,6 +99,10 @@ export default function TransfererPopup({ setAuthUser, settransferePopup }) {
                     step="0.01"
                     placeholder="0.00"
                     required
+                    value={form.amount}
+                    onChange={(e) =>
+                      setForm({ ...form, amount: e.target.value })
+                    }
                   />
                   <span className="currency">MAD</span>
                 </div>
@@ -95,7 +138,7 @@ export default function TransfererPopup({ setAuthUser, settransferePopup }) {
                   type="button"
                   className="btn btn-secondary"
                   id="cancelTransferBtn"
-                  onClick={()=>settransferePopup(false)}
+                  onClick={() => settransferePopup(false)}
                 >
                   Annuler
                 </button>

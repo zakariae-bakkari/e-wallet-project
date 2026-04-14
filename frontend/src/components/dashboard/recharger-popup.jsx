@@ -29,6 +29,7 @@ export default function RechargerPopup({ setAuthUser, setrechargerPopup }) {
                   <option value="" disabled>
                     Sélectionner une carte
                   </option>
+                  {setAuthUser}
                 </select>
               </div>
 

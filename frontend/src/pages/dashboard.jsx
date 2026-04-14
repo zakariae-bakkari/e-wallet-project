@@ -23,18 +23,21 @@ export default function Dashboard({ authUser, setAuthUser }) {
       {transferePopup && (
         <TransfererPopup
           setAuthUser={setAuthUser}
+          authUser={authUser}
           settransferePopup={settransferePopup}
         />
       )}
       {rechargerPopup && (
         <RechargerPopup
           setAuthUser={setAuthUser}
+          authUser={authUser}
           setrechargerPopup={setrechargerPopup}
         />
       )}
       {demanderPopup && (
         <DemanderPopup
           setAuthUser={setAuthUser}
+          authUser={authUser}
           setdemanderPopup={setdemanderPopup}
         />
       )}
