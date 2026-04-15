@@ -1,4 +1,14 @@
 export default function RechargerPopup({ setAuthUser, setrechargerPopup }) {
+  const [form, setForm] = useState({
+    sourceCard: "",
+    amount: 0,
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e);
+    console.log(form);
+  };
   return (
     <>
       <div className="popup-overlay" id="rechargerPopup">
@@ -16,7 +26,11 @@ export default function RechargerPopup({ setAuthUser, setrechargerPopup }) {
           </div>
 
           <div className="popup-body">
-            <form id="transferForm" className="transfer-form">
+            <form
+              id="transferForm"
+              className="transfer-form"
+              onSubmit={handleSubmit}
+            >
               <div className="form-group">
                 <label htmlFor="sourceCardRecharger">
                   <i className="fas fa-credit-card"></i> Choisir la carte
@@ -25,11 +39,19 @@ export default function RechargerPopup({ setAuthUser, setrechargerPopup }) {
                   id="sourceCardRecharger"
                   name="sourceCardRecharger"
                   required
+                  value={form.sourceCard}
+                  onChange={(e) =>
+                    setForm({ ...form, sourceCard: e.target.value })
+                  }
                 >
                   <option value="" disabled>
                     Sélectionner une carte
                   </option>
-                  {setAuthUser}
+                  {setAuthUser.wallet.cards.map((c) => (
+                    <option key={c.numcards} value={c.numcards}>
+                      {c.numcards}({c.balance}DH)
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -47,6 +69,10 @@ export default function RechargerPopup({ setAuthUser, setrechargerPopup }) {
                     step="0.01"
                     placeholder="0.00"
                     required
+                    value={form.amount}
+                    onChange={(e) =>
+                      setForm({ ...form, amount: e.target.value })
+                    }
                   />
                   <span className="currency">MAD</span>
                 </div>

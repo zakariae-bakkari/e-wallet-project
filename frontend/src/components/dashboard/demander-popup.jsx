@@ -1,4 +1,13 @@
 export default function DemanderPopup({ setAuthUser, setdemanderPopup }) {
+  const [form, setForm] = useState({
+    card: "",
+    amount: 0,
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(form);
+  };
   return (
     <>
       <div className="popup-overlay" id="DemanderPopup">
@@ -16,7 +25,11 @@ export default function DemanderPopup({ setAuthUser, setdemanderPopup }) {
           </div>
 
           <div className="popup-body">
-            <form id="transferForm" className="transfer-form">
+            <form
+              id="transferForm"
+              className="transfer-form"
+              onSubmit={handleSubmit}
+            >
               <div className="form-group">
                 <label htmlFor="accountDemander">
                   <i className="fas fa-credit-card"></i> entrer la carte
@@ -25,6 +38,8 @@ export default function DemanderPopup({ setAuthUser, setdemanderPopup }) {
                   type="text"
                   name="accountDemander"
                   id="accountDemander"
+                  value={(e) => form.card}
+                  onChange={(e) => setForm({ ...form, card: e.target.value })}
                 />
               </div>
 
@@ -42,6 +57,10 @@ export default function DemanderPopup({ setAuthUser, setdemanderPopup }) {
                     step="0.01"
                     placeholder="0.00"
                     required
+                    value={form.amount}
+                    onChange={(e) =>
+                      setForm({ ...form, amount: e.target.value })
+                    }
                   />
                   <span className="currency">MAD</span>
                 </div>
