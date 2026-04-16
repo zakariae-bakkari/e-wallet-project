@@ -3,7 +3,7 @@ export default function DashboardMain({
   settransferePopup,
   setdemanderPopup,
   setrechargerPopup,
-  transactions
+  transactions,
 }) {
   return (
     <>
@@ -115,7 +115,7 @@ export default function DashboardMain({
                     <div className="card-details">
                       <span className="card-label">Cartes actives</span>
                       <span className="card-value" id="activeCards">
-                        {authUser.wallet.card}
+                        {authUser.wallet.cards.length}{" "}
                       </span>
                     </div>
                   </div>
@@ -128,7 +128,7 @@ export default function DashboardMain({
                       className="action-btn"
                       id="quickTransfer"
                       type="button"
-                      onClick={()=>settransferePopup(true)}
+                      onClick={() => settransferePopup(true)}
                     >
                       <i className="fas fa-paper-plane"></i>
                       <span>Transférer</span>
@@ -137,7 +137,7 @@ export default function DashboardMain({
                       className="action-btn"
                       id="quickToRecharger"
                       type="button"
-                      onClick={()=>setrechargerPopup(true)}
+                      onClick={() => setrechargerPopup(true)}
                     >
                       <i className="fas fa-plus-circle"></i>
                       <span>Recharger</span>
@@ -146,7 +146,7 @@ export default function DashboardMain({
                       className="action-btn"
                       id="quickRequest"
                       type="button"
-                      onClick={()=>setdemanderPopup(true)}
+                      onClick={() => setdemanderPopup(true)}
                     >
                       <i className="fas fa-hand-holding-usd"></i>
                       <span>Demander</span>
@@ -162,14 +162,33 @@ export default function DashboardMain({
                     className="transactions-list"
                     id="recentTransactionsList"
                   >
-                    {transactions.map((t, index) => (
-                      <li
-                        key={index}
-                        style={{ color: t.type == "debit" ? "red" : "green" }}
-                      >
-                        {t.amount}-{t.type}-{t.date}-{t.to}
-                      </li>
-                    ))}
+                    {transactions
+                      .slice()
+                      .reverse()
+                      .map((t, index) => (
+                        <div
+                          key={index}
+                          className="transaction-item"
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            padding: "10px",
+                            borderBottom: "1px solid #eee",
+                            color: t.type === "debit" ? "#e74c3c" : "#2ecc71",
+                          }}
+                        >
+                          <span>{t.date}</span>
+                          <span>
+                            {t.type === "debit" ? "-" : "+"}
+                            {t.amount} MAD
+                          </span>
+                          <span>
+                            {t.type === "debit"
+                              ? `a: ${t.to}`
+                              : `de: ${t.from}`}
+                          </span>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </section>

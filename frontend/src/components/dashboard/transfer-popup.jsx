@@ -70,7 +70,7 @@ export default function TransfererPopup({
 
         // Transaction pour le destinataire (crédit)
         const transactionCredit = {
-          id: transactions.length+1,
+          id: transactions.length + 1,
           type: "credit",
           amount: amount,
           from: exp.name,
@@ -88,34 +88,59 @@ export default function TransfererPopup({
     });
   }
 
+  // ... inside TransfererPopup component
+
   async function transferer(exp, numcompte, amount) {
     try {
-      console.log("\n DÉBUT DU TRANSFERT ");
+      const numericAmount = parseFloat(amount);
       const destinataire = await checkUser(numcompte);
-      console.log(destinataire);
-      const checksolde = await checkSolde(exp, amount);
-      console.log(checksolde);
-      const updatesoldemessage = await updateSolde(exp, destinataire, amount);
-      console.log(updatesoldemessage);
-      const addtransaction = addtransactions(exp, destinataire, amount);
-      console.log(addtransaction);
+      await checkSolde(exp, numericAmount);
+
+      // 1. Update the Local Auth User State (Expéditeur)
+      const updatedExpediteur = {
+        ...exp,
+        wallet: {
+          ...exp.wallet,
+          balance: exp.wallet.balance - numericAmount,
+          transactions: [
+            ...exp.wallet.transactions,
+            {
+              id: Date.now(),
+              type: "debit",
+              amount: numericAmount,
+              from: exp.name,
+              to: destinataire.name,
+              date: new Date().toLocaleDateString(),
+            },
+          ],
+        },
+      };
+
+      // 2. Update Global States
+      setAuthUser(updatedExpediteur);
+      setTransactions(updatedExpediteur.wallet.transactions);
+
+      // Note: In a real app, you'd send a request to update 'destinataire' in the DB here
+
+      alert("Transfert réussi !");
+      settransferePopup(false);
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    const beneficiaryAccount = findbeneficiarieByid(
-      authUser.id,
-      form.selectedBene
-    ).account;
-    console.log(beneficiaryAccount);
+    // Use the form state directly
+    const selectedBeneficiary = authUser.wallet.beneficiaries.find(
+      (b) => b.account === form.selectedBene
+    );
 
-    const amount = Number(document.getElementById("amount").value);
-
-    transferer(authUser, beneficiaryAccount, amount);
+    if (selectedBeneficiary) {
+      transferer(authUser, selectedBeneficiary.account, form.amount);
+    }
   }
+
   return (
     <>
       <div className="popup-overlay" id="transferPopup">

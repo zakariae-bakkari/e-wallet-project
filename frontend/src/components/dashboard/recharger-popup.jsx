@@ -1,16 +1,106 @@
 import { useState } from "react";
+import { hasPaymentMethodDB, checkPaymentMethodDB } from "../../db/database";
 
-export default function RechargerPopup({ setAuthUser, setrechargerPopup,authUser }) {
+export default function RechargerPopup({
+  setAuthUser,
+  setrechargerPopup,
+  authUser,
+}) {
   const [form, setForm] = useState({
     sourceCard: "",
     amount: 0,
   });
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-    console.log(e);
-    console.log(form);
-  };
+
+    recharger(authUser, form.amount, form.sourceCard);
+  }
+
+  async function recharger(user, amount, sourceCard) {
+    try {
+      const hasPM = await hasPaymentMethod(user.id);
+      console.log(hasPM);
+      const checkPM = await checkPaymentMethod(sourceCard, user.id);
+      console.log(checkPM);
+      const trans = await addTransaction(user, amount, sourceCard);
+      console.log(trans);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  function hasPaymentMethod(userID) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const payment = hasPaymentMethodDB(userID);
+        if (payment) {
+          resolve("Un moyen de paiement est disponible");
+        } else {
+          reject("Aucun moyen de paiement trouve");
+        }
+      }, 1000);
+    });
+  }
+
+  function checkPaymentMethod(numCard, userID) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const check = checkPaymentMethodDB(numCard, userID);
+        if (check) {
+          resolve(`${numCard} est une card valide`);
+        } else {
+          reject(`${numCard} n'est pas une card valide`);
+        }
+      }, 1000);
+    });
+  }
+
+  //type : echoue ou recharge
+  function simulerServeurresponse() {
+    const random = Math.random();
+    return random < 0.7 ? "recharge" : "echec";
+  }
+ async function addTransaction(user, amount, numCard) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      let status = simulerServeurresponse();
+      const numericAmount = parseFloat(amount);
+
+      if (status === "recharge") {
+        // Create a deep-ish copy to avoid mutation
+        const updatedUser = {
+          ...user,
+          wallet: {
+            ...user.wallet,
+            balance: user.wallet.balance + numericAmount,
+            cards: user.wallet.cards.map(card => 
+              card.numcards === numCard 
+                ? { ...card, balance: card.balance - numericAmount } 
+                : card
+            ),
+            transactions: [
+              ...user.wallet.transactions,
+              {
+                id: Date.now(),
+                type: "credit", // Recharge is a credit to the wallet
+                amount: numericAmount,
+                date: new Date().toLocaleDateString(),
+                from: numCard,
+                to: "mywallet",
+              }
+            ]
+          }
+        };
+
+        setAuthUser(updatedUser);
+        resolve("La transaction a été ajoutée avec succès");
+      } else {
+        reject("La transaction a échoué");
+      }
+    }, 1000);
+  });
+}
   return (
     <>
       <div className="popup-overlay" id="rechargerPopup">
