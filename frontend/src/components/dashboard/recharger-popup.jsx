@@ -1,4 +1,6 @@
-export default function RechargerPopup({ setAuthUser, setrechargerPopup }) {
+import { useState } from "react";
+
+export default function RechargerPopup({ setAuthUser, setrechargerPopup,authUser }) {
   const [form, setForm] = useState({
     sourceCard: "",
     amount: 0,
@@ -47,7 +49,7 @@ export default function RechargerPopup({ setAuthUser, setrechargerPopup }) {
                   <option value="" disabled>
                     Sélectionner une carte
                   </option>
-                  {setAuthUser.wallet.cards.map((c) => (
+                  {authUser.wallet.cards.map((c) => (
                     <option key={c.numcards} value={c.numcards}>
                       {c.numcards}({c.balance}DH)
                     </option>

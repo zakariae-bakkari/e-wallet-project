@@ -1,4 +1,10 @@
-export default function DemanderPopup({ setAuthUser, setdemanderPopup }) {
+import { useState } from "react";
+
+export default function DemanderPopup({
+  setAuthUser,
+  setdemanderPopup,
+  authUser,
+}) {
   const [form, setForm] = useState({
     card: "",
     amount: 0,
@@ -38,7 +44,7 @@ export default function DemanderPopup({ setAuthUser, setdemanderPopup }) {
                   type="text"
                   name="accountDemander"
                   id="accountDemander"
-                  value={(e) => form.card}
+                  value={form.card}
                   onChange={(e) => setForm({ ...form, card: e.target.value })}
                 />
               </div>

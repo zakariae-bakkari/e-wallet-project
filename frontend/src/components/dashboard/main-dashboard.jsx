@@ -3,6 +3,7 @@ export default function DashboardMain({
   settransferePopup,
   setdemanderPopup,
   setrechargerPopup,
+  transactions
 }) {
   return (
     <>
@@ -161,9 +162,9 @@ export default function DashboardMain({
                     className="transactions-list"
                     id="recentTransactionsList"
                   >
-                    {authUser.wallet.transactions.map((t) => (
+                    {transactions.map((t, index) => (
                       <li
-                        key={t.id}
+                        key={index}
                         style={{ color: t.type == "debit" ? "red" : "green" }}
                       >
                         {t.amount}-{t.type}-{t.date}-{t.to}

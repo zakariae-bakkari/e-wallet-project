@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { findbeneficiarieByid, finduserbyaccount } from "../../db/database";
 
 export default function TransfererPopup({
   authUser,
   setAuthUser,
   settransferePopup,
+  setTransactions,
+  transactions,
 }) {
   const [form, setForm] = useState({
     selectedBene: "",
@@ -11,9 +14,107 @@ export default function TransfererPopup({
     amount: 0,
   });
 
+  function checkUser(numcompte) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const destinataire = finduserbyaccount(numcompte);
+        if (destinataire) {
+          resolve(destinataire);
+        } else {
+          reject("Destinataire non trouvé");
+        }
+      }, 500);
+    });
+  }
+
+  function checkSolde(exp, amount) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const solde = exp.wallet.balance;
+        if (solde >= amount) {
+          resolve("Solde suffisant");
+        } else {
+          reject("Solde insuffisant");
+        }
+      }, 400);
+    });
+  }
+
+  function updateSolde(exp, destinataire, amount) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        //exp.wallet.balance -= amount;
+
+        setAuthUser({
+          ...authUser,
+          balance: (authUser.wallet.balance -= amount),
+        });
+        destinataire.wallet.balance += amount;
+        resolve("Solde mis à jour");
+      }, 300);
+    });
+  }
+
+  function addtransactions(exp, destinataire, amount) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Transaction pour l'expéditeur (débit)
+        const transactionDebit = {
+          id: "4",
+          type: "debit",
+          amount: amount,
+          from: exp.name,
+          to: destinataire.name,
+          date: new Date().toLocaleDateString(),
+        };
+
+        // Transaction pour le destinataire (crédit)
+        const transactionCredit = {
+          id: transactions.length+1,
+          type: "credit",
+          amount: amount,
+          from: exp.name,
+          to: destinataire.name,
+          date: new Date().toLocaleDateString(),
+        };
+
+        authUser.wallet.transactions.push(transactionDebit);
+
+        setTransactions([...transactions, transactionDebit]);
+        console.log(transactions);
+        destinataire.wallet.transactions.push(transactionCredit);
+        resolve("Transaction enregistrée");
+      }, 200);
+    });
+  }
+
+  async function transferer(exp, numcompte, amount) {
+    try {
+      console.log("\n DÉBUT DU TRANSFERT ");
+      const destinataire = await checkUser(numcompte);
+      console.log(destinataire);
+      const checksolde = await checkSolde(exp, amount);
+      console.log(checksolde);
+      const updatesoldemessage = await updateSolde(exp, destinataire, amount);
+      console.log(updatesoldemessage);
+      const addtransaction = addtransactions(exp, destinataire, amount);
+      console.log(addtransaction);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(form);
+    const beneficiaryAccount = findbeneficiarieByid(
+      authUser.id,
+      form.selectedBene
+    ).account;
+    console.log(beneficiaryAccount);
+
+    const amount = Number(document.getElementById("amount").value);
+
+    transferer(authUser, beneficiaryAccount, amount);
   }
   return (
     <>

@@ -11,6 +11,11 @@ export default function Dashboard({ authUser, setAuthUser }) {
   const [demanderPopup, setdemanderPopup] = useState(false);
   const [rechargerPopup, setrechargerPopup] = useState(false);
   console.log(transferePopup);
+
+  const [transactions, setTransactions] = useState(
+    authUser.wallet.transactions
+  );
+
   return (
     <>
       <Header />
@@ -19,12 +24,15 @@ export default function Dashboard({ authUser, setAuthUser }) {
         setdemanderPopup={setdemanderPopup}
         setrechargerPopup={setrechargerPopup}
         settransferePopup={settransferePopup}
+        transactions={transactions}
       />
       {transferePopup && (
         <TransfererPopup
           setAuthUser={setAuthUser}
           authUser={authUser}
           settransferePopup={settransferePopup}
+          setTransactions={setTransactions}
+          transactions={transactions}
         />
       )}
       {rechargerPopup && (
@@ -32,6 +40,7 @@ export default function Dashboard({ authUser, setAuthUser }) {
           setAuthUser={setAuthUser}
           authUser={authUser}
           setrechargerPopup={setrechargerPopup}
+          setTransactions={setTransactions}
         />
       )}
       {demanderPopup && (

@@ -127,10 +127,10 @@ export const getbeneficiaries = (id) => {
   return database.users.find((u) => u.id === id).wallet.beneficiaries;
 };
 
-export const findbeneficiarieByid = (id, beneficiaryId) => {
+export const findbeneficiarieByid = (id, beneficiaryAccount) => {
   return database.users
     .find((u) => u.id === id)
-    .wallet.beneficiaries.find((u) => u.id === beneficiaryId);
+    .wallet.beneficiaries.find((u) => u.account === beneficiaryAccount);
 };
 
 export const finduserbyaccount = (numcompte) => {
