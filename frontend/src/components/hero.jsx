@@ -1,3 +1,4 @@
+import heroImage from "../assets/e-Wallet6.gif";
 export default function Hero() {
   return (
     <>
@@ -18,7 +19,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="hero-image">
-          <img src="../src/assets/e-Wallet6.gif" alt="E-Wallet Illustration" />
+          <img src={heroImage} alt="E-Wallet Illustration" />
         </div>
       </section>
     </>

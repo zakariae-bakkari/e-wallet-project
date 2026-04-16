@@ -1,10 +1,12 @@
+import logo from "../assets/e-wallet-logo.avif";
+
 export default function Header() {
   return (
     <>
       <header>
         <nav className="navbar">
           <a href="#" className="logo">
-            <img src="../src/assets/e-wallet-logo.avif" alt="E-Wallet Logo" />
+            <img src={logo} alt="E-Wallet Logo" />
           </a>
           <ul className="nav-links">
             <li>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { finduserbymail } from "../db/database";
+import heroImage from "../assets/e-Wallet6.gif";
 
 export default function HeroLogin({ setisLoggedIn, setAuthUser }) {
   const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ export default function HeroLogin({ setisLoggedIn, setAuthUser }) {
       if (user) {
         setisLoggedIn(true);
         setAuthUser(user);
-        
+
         sessionStorage.setItem("currentUser", JSON.stringify(user));
       } else {
         alert("Bad credentials.");
@@ -68,10 +69,7 @@ export default function HeroLogin({ setisLoggedIn, setAuthUser }) {
             </p>
           </div>
           <div className="hero-image">
-            <img
-              src="../src/assets/e-Wallet6.gif"
-              alt="Illustration de connexion"
-            />
+            <img src={heroImage} alt="Illustration de connexion" />
           </div>
         </section>
       </main>
