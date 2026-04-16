@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { findbeneficiarieByid, finduserbyaccount } from "../../db/database";
+import { finduserbyaccount } from "../../db/database";
 
 export default function TransfererPopup({
   authUser,
   setAuthUser,
   settransferePopup,
   setTransactions,
-  transactions,
 }) {
   const [form, setForm] = useState({
     selectedBene: "",
@@ -40,55 +39,53 @@ export default function TransfererPopup({
     });
   }
 
-  function updateSolde(exp, destinataire, amount) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        //exp.wallet.balance -= amount;
+  // function updateSolde(exp, destinataire, amount) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       //exp.wallet.balance -= amount;
 
-        setAuthUser({
-          ...authUser,
-          balance: (authUser.wallet.balance -= amount),
-        });
-        destinataire.wallet.balance += amount;
-        resolve("Solde mis à jour");
-      }, 300);
-    });
-  }
+  //       setAuthUser({
+  //         ...authUser,
+  //         balance: (authUser.wallet.balance -= amount),
+  //       });
+  //       destinataire.wallet.balance += amount;
+  //       resolve("Solde mis à jour");
+  //     }, 300);
+  //   });
+  // }
 
-  function addtransactions(exp, destinataire, amount) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Transaction pour l'expéditeur (débit)
-        const transactionDebit = {
-          id: "4",
-          type: "debit",
-          amount: amount,
-          from: exp.name,
-          to: destinataire.name,
-          date: new Date().toLocaleDateString(),
-        };
+  // function addtransactions(exp, destinataire, amount) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       // Transaction pour l'expéditeur (débit)
+  //       const transactionDebit = {
+  //         id: "4",
+  //         type: "debit",
+  //         amount: amount,
+  //         from: exp.name,
+  //         to: destinataire.name,
+  //         date: new Date().toLocaleDateString(),
+  //       };
 
-        // Transaction pour le destinataire (crédit)
-        const transactionCredit = {
-          id: transactions.length + 1,
-          type: "credit",
-          amount: amount,
-          from: exp.name,
-          to: destinataire.name,
-          date: new Date().toLocaleDateString(),
-        };
+  //       // Transaction pour le destinataire (crédit)
+  //       const transactionCredit = {
+  //         id: transactions.length + 1,
+  //         type: "credit",
+  //         amount: amount,
+  //         from: exp.name,
+  //         to: destinataire.name,
+  //         date: new Date().toLocaleDateString(),
+  //       };
 
-        authUser.wallet.transactions.push(transactionDebit);
+  //       authUser.wallet.transactions.push(transactionDebit);
 
-        setTransactions([...transactions, transactionDebit]);
-        console.log(transactions);
-        destinataire.wallet.transactions.push(transactionCredit);
-        resolve("Transaction enregistrée");
-      }, 200);
-    });
-  }
-
-  // ... inside TransfererPopup component
+  //       setTransactions([...transactions, transactionDebit]);
+  //       console.log(transactions);
+  //       destinataire.wallet.transactions.push(transactionCredit);
+  //       resolve("Transaction enregistrée");
+  //     }, 200);
+  //   });
+  // }
 
   async function transferer(exp, numcompte, amount) {
     try {
@@ -205,7 +202,7 @@ export default function TransfererPopup({
                   </option>
                   {authUser.wallet.cards.map((c) => (
                     <option key={c.numcards} value={c.numcards}>
-                      {c.numcards}-{c.balance}
+                      {c.numcards}({c.balance}DH)
                     </option>
                   ))}
                 </select>
