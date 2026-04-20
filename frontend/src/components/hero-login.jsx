@@ -3,8 +3,8 @@ import { finduserbymail } from "../db/database";
 import heroImage from "../assets/e-Wallet6.gif";
 
 export default function HeroLogin({ setisLoggedIn, setAuthUser }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("zakariae@gmail.com");
+  const [password, setPassword] = useState("12345");
   const handleLogin = (e) => {
     e.preventDefault();
     console.log(finduserbymail(email, password));
@@ -31,6 +31,8 @@ export default function HeroLogin({ setisLoggedIn, setAuthUser }) {
               Accédez à votre E-Wallet en toute sécurité et gérez vos
               transactions en toute confiance.
             </p>
+            <p>please use those credentials to test <br></br> email: <code>zakariae@gmail.com</code>
+            <br></br> password: <code>12345</code></p>
             <div id="error"> </div>
             <form className="login-form" onSubmit={handleLogin}>
               <div className="input-group">
