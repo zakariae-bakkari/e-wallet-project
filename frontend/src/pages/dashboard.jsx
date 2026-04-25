@@ -4,23 +4,27 @@ import RechargerPopup from "../components/dashboard/recharger-popup";
 import TransfererPopup from "../components/dashboard/transfer-popup";
 import Header from "../components/header";
 import Footer from "../components/footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Dashboard({ authUser, setAuthUser }) {
+export default function Dashboard({ authUser, setAuthUser, setisLoggedIn }) {
   const [transferePopup, settransferePopup] = useState(false);
   const [demanderPopup, setdemanderPopup] = useState(false);
   const [rechargerPopup, setrechargerPopup] = useState(false);
-  console.log(transferePopup);
 
   const [transactions, setTransactions] = useState(
-    authUser.wallet.transactions
+    authUser.wallet.transactions,
   );
 
+  useEffect(() => {
+    console.log("dashboard is mounted")
+    document.title = "Tableau de bord | E-Wallet";
+  }, []);
   return (
     <>
       <Header />
       <DashboardMain
         authUser={authUser}
+        setisLoggedIn={setisLoggedIn}
         setdemanderPopup={setdemanderPopup}
         setrechargerPopup={setrechargerPopup}
         settransferePopup={settransferePopup}

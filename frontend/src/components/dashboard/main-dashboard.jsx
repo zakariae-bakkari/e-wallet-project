@@ -4,6 +4,7 @@ export default function DashboardMain({
   setdemanderPopup,
   setrechargerPopup,
   transactions,
+  setisLoggedIn
 }) {
   return (
     <>
@@ -44,6 +45,16 @@ export default function DashboardMain({
                     <a href="#support">
                       <i className="fas fa-headset"></i>
                       <span>Aide & Support</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#logout" onClick={() => {
+                      localStorage.removeItem("isLoggedIn");
+                      localStorage.removeItem("authUser");
+                      setisLoggedIn(false);
+                    }}>
+                      <i className="fas fa-headset"></i>
+                      <span>Logout</span>
                     </a>
                   </li>
                 </ul>
