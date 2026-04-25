@@ -1034,6 +1034,7 @@ footer {
    POPUP TRANSFER
 ===================== */
 .popup-overlay {
+  display: flex;
   position: fixed;
   inset: 0;
   width: 100%;
